@@ -2,6 +2,14 @@ html {
   background-color: #efefef;
 }
 
+.input_title .el-input__inner {
+  border: none;
+  border-radius: 0;
+  text-align: center;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
 .el-form-item.is-required .el-form-item__label:before {
   display: none;
 }
@@ -43,4 +51,17 @@ html {
   max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
+}
+
+.header-form {
+  display: flex;
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.header-title {
+  display: flex;
+  flex: auto;
+  margin: 0;
+  line-height: 40px;
 }

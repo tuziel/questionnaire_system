@@ -1,10 +1,10 @@
 <template>
-  <div class="wrapper">
+  <el-card>
     <div class="header-form">
       <h2 class="header-title">问卷列表</h2>
 
       <div>
-        <el-button type="primary" icon="el-icon-plus" v-show="selected.length === 0">新增问卷</el-button>
+        <el-button type="primary" icon="el-icon-plus" v-show="!selected.length" @click="addPaper">新增问卷</el-button>
         <el-button type="danger" icon="el-icon-delete" v-show="selected.length" @click="deletePapers()">删除问卷</el-button>
       </div>
     </div>
@@ -13,18 +13,19 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" width="55"></el-table-column>
       <el-table-column prop="title" label="标题"></el-table-column>
-      <el-table-column label="状态">
+      <el-table-column label="状态" width="120">
         <template slot-scope="scope">
           <span :style="'color:'+getStateColor(scope.row.state)">{{getStateText(scope.row.state)}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="80">
         <template slot-scope="scope">
-          <el-button size="mini" icon="el-icon-edit"></el-button>
+          <el-button size="mini" icon="el-icon-edit" v-if="scope.row.state === 0" @click="editPaper(scope.row.id)"></el-button>
+          <el-button size="mini" icon="el-icon-document" v-else></el-button>
         </template>
       </el-table-column>
     </el-table>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -46,6 +47,19 @@ export default {
   },
 
   methods: {
+    addPaper () {
+      this.$router.push({
+        name: 'addpaper'
+      })
+    },
+    editPaper (id) {
+      this.$router.push({
+        name: 'editpaper',
+        query: {
+          id: id
+        }
+      })
+    },
     deletePapers () {
       const idList = this.selected.map(paper => paper.id)
 
@@ -78,23 +92,8 @@ export default {
 
   computed: {
     ...mapGetters('papers', {
-      papers: 'papers',
-      getPaperById: 'getPaperById'
+      papers: 'papers'
     })
   }
 }
 </script>
-
-<style scoped>
-.header-form {
-  display: flex;
-  text-align: right;
-  margin-bottom: 20px;
-}
-.header-title {
-  display: flex;
-  flex: auto;
-  margin: 0;
-  line-height: 40px;
-}
-</style>
