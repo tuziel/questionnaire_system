@@ -34,6 +34,7 @@ const state = {
 }
 
 const getters = {
+  // 根据问题id获取选项列表
   getOptionsByQuestionId: (state) =>
     (id) => state.options.filter(
       option => option.questionId === id
@@ -41,11 +42,38 @@ const getters = {
 }
 
 const actions = {
-
+  addOption ({ commit }, option) {
+    commit('addOption', option)
+    return state.nextId - 1
+  },
+  updateOption ({ commit }, option) {
+    commit('updateOption', option)
+  },
+  checkoutOption ({ commit }, id) {
+    commit('checkoutOption', id)
+  }
 }
 
 const mutations = {
-
+  // 新增选项
+  addOption (state, option) {
+    state.options.push({
+      id: state.nextId++,
+      questionId: option.questionId,
+      text: option.text,
+      count: 0
+    })
+  },
+  // 更新选项内容
+  updateOption (state, option) {
+    const oldOption = state.options.find(oldOption => oldOption.id === option.id)
+    oldOption.text = option.text
+  },
+  // 完成问卷时统计总量
+  checkoutOption (state, id) {
+    const option = state.options.find(option => option.id === id)
+    option.count++
+  }
 }
 
 export default {

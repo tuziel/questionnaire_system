@@ -28,19 +28,54 @@ const state = {
 }
 
 const getters = {
+  // 获取所有问卷
   papers: (state) => state.papers,
+  // 通过问卷id获取问卷
   getPaperById: (state) => (id) => state.papers.find(paper => paper.id === id)
 }
 
 const actions = {
-  deletePaperByIdList (context, idList) {
+  // 根据id列表删除对应的问卷
+  deletePaperByIdList ({ commit }, idList) {
     idList.forEach((id) => {
-      context.commit('deletePaperById', id)
+      commit('deletePaperById', id)
     })
+  },
+  addPaper ({ commit }, paper) {
+    commit('addPaper', paper)
+    return state.nextId - 1
+  },
+  updatePaper ({ commit }, paper) {
+    commit('updatePaper', paper)
+  },
+  publishPaper ({ commit }, id) {
+    commit('publishPaper', id)
+  },
+  deletePaperById ({ commit }, id) {
+    commit('deletePaperById', id)
   }
 }
 
 const mutations = {
+  // 新增问卷
+  addPaper (state, paper) {
+    state.papers.push({
+      id: state.nextId++,
+      title: paper.title,
+      state: STATE_PENDING
+    })
+  },
+  // 更新问卷标题
+  updatePaper (state, paper) {
+    const oldPaper = state.options.find(oldPaper => oldPaper.id === paper.id)
+    oldPaper.title = paper.title
+  },
+  // 发布问卷
+  publishPaper (state, id) {
+    const paper = state.papers.find(paper => paper.id === id)
+    paper.state = STATE_PUBLISHING
+  },
+  // 删除id对应的问卷
   deletePaperById (state, id) {
     const papers = state.papers
     const index = papers.findIndex(paper => paper.id === id)

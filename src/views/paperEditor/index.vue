@@ -4,13 +4,13 @@
       <h2 class="header-title">{{title}}</h2>
 
       <div>
-        <el-button type="primary" icon="el-icon-message">保存问卷</el-button>
-        <el-button type="primary" icon="el-icon-upload2">发布问卷</el-button>
+        <el-button type="primary" icon="el-icon-message" @click="savePaper">保存问卷</el-button>
+        <el-button type="primary" icon="el-icon-upload2" @click="publishPaper">发布问卷</el-button>
       </div>
     </div>
 
     <h3 class="quest-title">
-      <el-input class="input_title" v-model="questTitle" placeholder="请输入标题"></el-input>
+      <el-input class="input_title" v-model="paperTitle" placeholder="请输入标题"></el-input>
     </h3>
 
     <div class="quest-list">
@@ -44,7 +44,7 @@ export default {
     return {
       ...this.$route.query,
       title: '',
-      questTitle: '',
+      paperTitle: '',
       questions: [],
       isShowAddBox: false
     }
@@ -75,7 +75,7 @@ export default {
 
         // 深拷贝所有数据
         const paper = this.getPaperById(id)
-        this.questTitle = paper.title
+        this.paperTitle = paper.title
 
         const questtions = this.getQuestionsByPaperId(id)
         questtions.forEach(quest => {
@@ -102,6 +102,29 @@ export default {
       this.$router.push({
         name: 'home'
       })
+    },
+
+    savePaper () {
+      return new Promise((resolve, reject) => {
+        if (this.id) {
+          // TODO: 更新问卷
+        } else {
+          this.$store.dispatch('addPaper', {
+            title: this.paperTitle,
+            questions: this.questions
+          }).then(() => {
+            this.$message.success('保存成功')
+            resolve()
+            this.back()
+          })
+        }
+      })
+    },
+    publishPaper () {
+      this.savePaper()
+        .then(() => {
+          // TODO: 发布问卷
+        })
     },
 
     showQuestBox () {

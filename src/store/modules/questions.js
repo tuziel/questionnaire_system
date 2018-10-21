@@ -35,15 +35,35 @@ const state = {
 }
 
 const getters = {
+  // 根据问卷id获取题目列表
   getQuestionsByPaperId: (state) => (id) => state.questions.filter(quest => quest.paperId === id)
 }
 
 const actions = {
-
+  addQuestion ({ commit }, quest) {
+    commit('addQuestion', quest)
+    return state.nextId - 1
+  },
+  updateQuestion ({ commit }, quest) {
+    commit('updateQuestion', quest)
+  }
 }
 
 const mutations = {
-
+  // 新增问题
+  addQuestion (state, quest) {
+    state.questions.push({
+      id: state.nextId++,
+      paperId: quest.paperId,
+      type: quest.type,
+      title: quest.title
+    })
+  },
+  // 更新问题题目
+  updateQuestion (state, quest) {
+    const oldQuest = state.options.find(oldQuest => oldQuest.id === quest.id)
+    oldQuest.title = quest.title
+  }
 }
 
 export default {

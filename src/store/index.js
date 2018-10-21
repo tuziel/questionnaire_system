@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import papers from './modules/papers'
 import questions from './modules/questions'
 import options from './modules/options'
+import actions from './actions'
 
 Vue.use(Vuex)
 
@@ -14,5 +15,6 @@ export default new Vuex.Store({
     questions,
     options
   },
+  actions: actions,
   strict: debug
 })
