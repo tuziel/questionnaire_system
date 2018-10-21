@@ -25,7 +25,7 @@
       <el-table-column label="操作" width="80">
         <template slot-scope="scope">
           <el-button size="mini" icon="el-icon-edit" v-if="scope.row.state === 0" @click="editPaper(scope.row.id)"></el-button>
-          <el-button size="mini" icon="el-icon-document" v-else></el-button>
+          <el-button size="mini" icon="el-icon-document" v-else @click="toCharts(scope.row.id)"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -64,6 +64,7 @@ export default {
         }
       })
     },
+
     toPreview (id) {
       this.$router.push({
         name: 'preview',
@@ -72,6 +73,15 @@ export default {
         }
       })
     },
+    toCharts (id) {
+      this.$router.push({
+        name: 'charts',
+        query: {
+          id: id
+        }
+      })
+    },
+
     deletePapers () {
       const idList = this.selected.map(paper => paper.id)
 

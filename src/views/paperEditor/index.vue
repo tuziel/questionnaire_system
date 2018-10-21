@@ -32,6 +32,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import QuestionEditor from '@/components/question/QuestionEditor'
+const STATE_PENDING = 0
 const TYPE_SINGLE_CHOICE = 1
 const TYPE_MULTIPLE_CHOICE = 2
 const TYPE_TEXT = 3
@@ -74,6 +75,7 @@ export default {
         const id = +this.id
         const paper = this.getPaperById(id)
         if (!paper) { return this.back() }
+        if (paper.state !== STATE_PENDING) { return this.toCharts(id) }
 
         // 深拷贝所有数据
         this.paperTitle = paper.title
@@ -96,6 +98,14 @@ export default {
 
           this.questions.push(data)
         })
+      })
+    },
+    toCharts (id) {
+      this.$router.push({
+        name: 'charts',
+        query: {
+          id: id
+        }
       })
     },
     back () {

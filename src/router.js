@@ -19,5 +19,9 @@ export default new Router({
     path: '/preview',
     name: 'preview',
     component: () => import('./views/paperEditor/preview')
+  }, {
+    path: '/charts',
+    name: 'charts',
+    component: () => import('./views/paperEditor/charts')
   }]
 })
