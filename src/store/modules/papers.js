@@ -40,6 +40,7 @@ const actions = {
     idList.forEach((id) => {
       commit('deletePaperById', id)
     })
+    return state.nextId - 1
   },
   addPaper ({ commit }, paper) {
     commit('addPaper', paper)
@@ -67,7 +68,7 @@ const mutations = {
   },
   // 更新问卷标题
   updatePaper (state, paper) {
-    const oldPaper = state.options.find(oldPaper => oldPaper.id === paper.id)
+    const oldPaper = state.papers.find(oldPaper => oldPaper.id === paper.id)
     oldPaper.title = paper.title
   },
   // 发布问卷

@@ -72,11 +72,11 @@ export default {
       this.title = '编辑问卷'
       this.$nextTick(() => {
         const id = +this.id
+        const paper = this.getPaperById(id)
+        if (!paper) { return this.back() }
 
         // 深拷贝所有数据
-        const paper = this.getPaperById(id)
         this.paperTitle = paper.title
-
         const questtions = this.getQuestionsByPaperId(id)
         questtions.forEach(quest => {
           const data = {
@@ -106,24 +106,21 @@ export default {
 
     savePaper () {
       return new Promise((resolve, reject) => {
-        if (this.id) {
-          // TODO: 更新问卷
-        } else {
-          this.$store.dispatch('addPaper', {
-            title: this.paperTitle,
-            questions: this.questions
-          }).then(() => {
-            this.$message.success('保存成功')
-            resolve()
-            this.back()
-          })
-        }
+        this.$store.dispatch('updatePaper', {
+          id: +this.id || 0,
+          title: this.paperTitle || '无标题',
+          questions: this.questions
+        }).then((id) => {
+          this.$message.success('保存成功')
+          resolve(id)
+          this.back()
+        })
       })
     },
     publishPaper () {
       this.savePaper()
-        .then(() => {
-          // TODO: 发布问卷
+        .then((id) => {
+          this.$store.dispatch('publishPaper', id)
         })
     },
 

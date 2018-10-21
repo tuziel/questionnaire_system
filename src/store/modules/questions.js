@@ -61,7 +61,7 @@ const mutations = {
   },
   // 更新问题题目
   updateQuestion (state, quest) {
-    const oldQuest = state.options.find(oldQuest => oldQuest.id === quest.id)
+    const oldQuest = state.questions.find(oldQuest => oldQuest.id === quest.id)
     oldQuest.title = quest.title
   }
 }

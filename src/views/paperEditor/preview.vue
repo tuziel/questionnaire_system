@@ -37,10 +37,10 @@ export default {
       this.title = '编辑问卷'
       this.$nextTick(() => {
         const id = +this.id
-
         const paper = this.getPaperById(id)
-        this.questTitle = paper.title
+        if (!paper) { return this.back() }
 
+        this.questTitle = paper.title
         this.questions = this.getQuestionsByPaperId(id)
         this.questions.forEach(quest => {
           if (quest.type !== TYPE_TEXT) {
