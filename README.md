@@ -1,28 +1,28 @@
 # 任务五十：微型调查问卷平台
 
-> [http://ife.baidu.com/2016/task/detail?taskId=50](http://ife.baidu.com/2016/task/detail?taskId=50)
+> 来自百度前端学院大作业 [http://ife.baidu.com/2016/task/detail?taskId=50](http://ife.baidu.com/2016/task/detail?taskId=50)
 
-## Project setup
+## 安装依赖
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 编译并启动热更新服务
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### 编译打包到生产版本
 ```
 npm run build
 ```
 
-### Run your tests
+### 测试
 ```
 npm run test
 ```
 
-### Lints and fixes files
+### 代码审核
 ```
 npm run lint
 ```
