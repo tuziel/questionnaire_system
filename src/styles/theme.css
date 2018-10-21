@@ -1,0 +1,40 @@
+html {
+  background-color: #efefef;
+}
+
+.el-form-item.is-required .el-form-item__label:before {
+  display: none;
+}
+
+.el-select,
+.el-date-editor--daterange.el-input__inner {
+  width: 100%;
+}
+
+.el-tooltip__popper {
+  margin-left: 40px;
+  margin-right: 20px;
+}
+
+.el-textarea__inner[type="textarea"] {
+  min-height: 4em;
+}
+
+.el-table__body-wrapper {
+  overflow: hidden;
+}
+
+.el-table th,
+.el-table td {
+  padding-left: 0;
+  padding-right: 0;
+  text-align: center;
+}
+
+.el-table th .cell,
+.el-table td .cell,
+.el-table th:first-child .cell,
+.el-table td:first-child .cell {
+  padding-left: 0;
+  padding-right: 0;
+}
