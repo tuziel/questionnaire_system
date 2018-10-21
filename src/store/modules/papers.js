@@ -28,7 +28,8 @@ const state = {
 }
 
 const getters = {
-
+  papers: (state) => state.papers,
+  getPaperById: (state) => (id) => state.papers.find(paper => paper.id === id)
 }
 
 const actions = {
