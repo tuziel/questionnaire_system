@@ -105,22 +105,33 @@ export default {
     },
 
     savePaper () {
-      return new Promise((resolve, reject) => {
-        this.$store.dispatch('updatePaper', {
-          id: +this.id || 0,
-          title: this.paperTitle || '无标题',
-          questions: this.questions
-        }).then((id) => {
-          this.$message.success('保存成功')
-          resolve(id)
-          this.back()
-        })
+      this.$store.dispatch('updatePaper', {
+        id: +this.id || 0,
+        title: this.paperTitle || '无标题',
+        questions: this.questions
+      }).then(() => {
+        this.$message.success('保存成功')
+        this.back()
       })
     },
     publishPaper () {
-      this.savePaper()
-        .then((id) => {
-          this.$store.dispatch('publishPaper', id)
+      this.$confirm('确认发布问卷?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$store.dispatch('updatePaper', {
+            id: +this.id || 0,
+            title: this.paperTitle || '无标题',
+            questions: this.questions
+          }).then((id) => {
+            this.$store.dispatch('publishPaper', id)
+              .then(() => {
+                this.$message.success('发布成功')
+                this.back()
+              })
+          })
         })
     },
 
