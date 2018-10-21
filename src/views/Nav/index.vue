@@ -10,7 +10,7 @@ export default {
     return {
       nav: [{
         index: '/',
-        name: '主页'
+        name: '我的问卷'
       }, {
         index: '/about',
         name: 'about'
