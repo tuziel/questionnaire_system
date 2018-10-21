@@ -1,7 +1,7 @@
 <template>
   <el-card>
     <div class="header-form">
-      <h2 class="header-title">问卷列表</h2>
+      <h2 class="header-title">问卷列表(点击标题可预览)</h2>
 
       <div>
         <el-button type="primary" icon="el-icon-plus" v-show="!selected.length" @click="addPaper">新增问卷</el-button>
@@ -12,7 +12,11 @@
     <el-table ref="papers" :data="papers" border style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" width="55"></el-table-column>
-      <el-table-column prop="title" label="标题"></el-table-column>
+      <el-table-column prop="title" label="标题">
+        <template slot-scope="scope">
+          <el-button type="text" @click="toPreview(scope.row.id)">{{scope.row.title}}</el-button>
+        </template>
+      </el-table-column>
       <el-table-column label="状态" width="120">
         <template slot-scope="scope">
           <span :style="'color:'+getStateColor(scope.row.state)">{{getStateText(scope.row.state)}}</span>
@@ -55,6 +59,14 @@ export default {
     editPaper (id) {
       this.$router.push({
         name: 'editpaper',
+        query: {
+          id: id
+        }
+      })
+    },
+    toPreview (id) {
+      this.$router.push({
+        name: 'preview',
         query: {
           id: id
         }

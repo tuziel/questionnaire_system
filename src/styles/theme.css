@@ -2,6 +2,10 @@ html {
   background-color: #efefef;
 }
 
+.p-20 {
+  padding: 20px;
+}
+
 .input_title .el-input__inner {
   border: none;
   border-radius: 0;

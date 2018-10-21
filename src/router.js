@@ -19,5 +19,9 @@ export default new Router({
     path: '/editpaper',
     name: 'editpaper',
     component: () => import('./views/paperEditor')
+  }, {
+    path: '/preview',
+    name: 'preview',
+    component: () => import('./views/paperEditor/preview')
   }]
 })

@@ -10,10 +10,12 @@
     </div>
 
     <h3 class="quest-title">
-      <el-input class="input_title" placeholder="请输入标题"></el-input>
+      <el-input class="input_title" v-model="questTitle" placeholder="请输入标题"></el-input>
     </h3>
 
     <div class="quest-list">
+
+      <QuestionEditor v-for="(quest, index) in questions" :key="quest.id" class="quest-box" v-model="questions[index]" />
 
       <div class="quest-box quest-box-new" v-if="isShowAddBox">
         <el-button @click="addSingleQuest">单选题</el-button>
@@ -21,20 +23,28 @@
         <el-button @click="addTextQuest">文本题</el-button>
       </div>
 
-      <el-button class="quest-box" icon="el-icon-plus" @click="addQuest">添加问题</el-button>
+      <el-button class="quest-box p-20" icon="el-icon-plus" @click="showQuestBox">添加问题</el-button>
+
     </div>
   </el-card>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import QuestionEditor from '@/components/question/QuestionEditor'
+const TYPE_SINGLE_CHOICE = 1
+const TYPE_MULTIPLE_CHOICE = 2
+const TYPE_TEXT = 3
 
 export default {
+  components: {
+    QuestionEditor
+  },
   data () {
     return {
-      ...this.$route.params,
+      ...this.$route.query,
       title: '',
-      originPaper: [],
+      questTitle: '',
       questions: [],
       isShowAddBox: false
     }
@@ -60,6 +70,33 @@ export default {
     },
     initEdit () {
       this.title = '编辑问卷'
+      this.$nextTick(() => {
+        const id = +this.id
+
+        // 深拷贝所有数据
+        const paper = this.getPaperById(id)
+        this.questTitle = paper.title
+
+        const questtions = this.getQuestionsByPaperId(id)
+        questtions.forEach(quest => {
+          const data = {
+            id: quest.id,
+            title: quest.title,
+            type: quest.type
+          }
+
+          if (quest.type !== TYPE_TEXT) {
+            const options = this.getOptionsByQuestionId(quest.id)
+            data.options = options.map(option => ({
+              id: option.id,
+              questionId: option.questionId,
+              text: option.text
+            }))
+          }
+
+          this.questions.push(data)
+        })
+      })
     },
     back () {
       this.$router.push({
@@ -67,22 +104,43 @@ export default {
       })
     },
 
-    addQuest () {
+    showQuestBox () {
       this.isShowAddBox = true
     },
+    addQuest (type) {
+      const data = {
+        title: '',
+        type: type
+      }
+
+      if (type !== TYPE_TEXT) {
+        data.options = [{ text: '' }, { text: '' }]
+      }
+
+      this.questions.push(data)
+    },
     addSingleQuest () {
+      this.addQuest(TYPE_SINGLE_CHOICE)
       this.isShowAddBox = false
     },
     addMultipleQuest () {
+      this.addQuest(TYPE_MULTIPLE_CHOICE)
       this.isShowAddBox = false
     },
     addTextQuest () {
+      this.addQuest(TYPE_TEXT)
       this.isShowAddBox = false
     }
   },
   computed: {
     ...mapGetters('papers', {
       getPaperById: 'getPaperById'
+    }),
+    ...mapGetters('questions', {
+      getQuestionsByPaperId: 'getQuestionsByPaperId'
+    }),
+    ...mapGetters('options', {
+      getOptionsByQuestionId: 'getOptionsByQuestionId'
     })
   }
 }
@@ -96,7 +154,6 @@ export default {
 }
 .quest-box {
   width: 100%;
-  height: 80px;
   margin-top: 20px;
   border-radius: 0;
 }
@@ -104,7 +161,7 @@ export default {
   margin-top: 0;
 }
 .quest-box-new {
-  padding: 18px;
+  padding: 20px;
   border: 1px solid #dcdfe6;
   text-align: center;
 }
