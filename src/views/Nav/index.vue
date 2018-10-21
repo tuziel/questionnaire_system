@@ -11,9 +11,6 @@ export default {
       nav: [{
         index: '/',
         name: '我的问卷'
-      }, {
-        index: '/about',
-        name: 'about'
       }]
     }
   },

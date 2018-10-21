@@ -8,10 +8,6 @@ export default new Router({
     name: 'home',
     component: () => import('./views/Home')
   }, {
-    path: '/about',
-    name: 'about',
-    component: () => import('./views/About')
-  }, {
     path: '/addpaper',
     name: 'addpaper',
     component: () => import('./views/paperEditor')
