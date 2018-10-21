@@ -34,7 +34,10 @@ const state = {
 }
 
 const getters = {
-
+  getOptionsByQuestionId: (state) =>
+    (id) => state.options.filter(
+      option => option.questionId === id
+    )
 }
 
 const actions = {

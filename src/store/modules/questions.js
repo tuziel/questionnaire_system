@@ -16,7 +16,7 @@ const questions = (function () {
 
     arr.push({
       id: i,
-      paperId: (i - 1) / 3 >> 0,
+      paperId: (i - 1) / 3 + 1 >> 0,
       type: type,
       title: [
         '单选测试',
@@ -35,7 +35,7 @@ const state = {
 }
 
 const getters = {
-
+  getQuestionsByPaperId: (state) => (id) => state.questions.filter(quest => quest.paperId === id)
 }
 
 const actions = {
