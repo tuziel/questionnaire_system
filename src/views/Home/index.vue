@@ -1,16 +1,26 @@
 <template>
   <div class="wrapper">
-    <el-table :data="papers" border style="width: 100%">
+    <div class="header-form">
+      <h2 class="header-title">问卷列表</h2>
+
+      <div>
+        <el-button type="primary" icon="el-icon-plus" v-show="selected.length === 0">新增问卷</el-button>
+        <el-button type="danger" icon="el-icon-delete" v-show="selected.length" @click="deletePapers()">删除问卷</el-button>
+      </div>
+    </div>
+
+    <el-table ref="papers" :data="papers" border style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" width="55"></el-table-column>
       <el-table-column prop="title" label="标题"></el-table-column>
       <el-table-column label="状态">
-        <template slot-scope="scope">{{getStateText(scope.row.state)}}</template>
+        <template slot-scope="scope">
+          <span :style="'color:'+getStateColor(scope.row.state)">{{getStateText(scope.row.state)}}</span>
+        </template>
       </el-table-column>
-      <el-table-column label="操作" width="120">
+      <el-table-column label="操作" width="80">
         <template slot-scope="scope">
           <el-button size="mini" icon="el-icon-edit"></el-button>
-          <el-button size="mini" type="danger" icon="el-icon-delete"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -25,15 +35,47 @@ export default {
   components: {
     Nav
   },
-  mounted () {
-    console.log(this.papers)
-    console.log(this.getPaperById(3))
-  },
-  methods: {
-    getStateText (state) {
-      return ['未发布', '已发布', '已结束'][state]
+
+  data () {
+    return {
+      selected: []
     }
   },
+
+  mounted () {
+  },
+
+  methods: {
+    deletePapers () {
+      const idList = this.selected.map(paper => paper.id)
+
+      this.$confirm('此操作将永久删除该问卷, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$store.dispatch('papers/deletePaperByIdList', idList)
+            .then(() => {
+              this.$refs.papers.clearSelection()
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+            })
+        })
+    },
+    getStateText (state) {
+      return ['未发布', '已发布', '已结束'][state]
+    },
+    getStateColor (state) {
+      return ['#E6A23C', '#67C23A', '#F56C6C'][state]
+    },
+    handleSelectionChange (val) {
+      this.selected = val
+    }
+  },
+
   computed: {
     ...mapGetters('papers', {
       papers: 'papers',
@@ -43,5 +85,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.header-form {
+  display: flex;
+  text-align: right;
+  margin-bottom: 20px;
+}
+.header-title {
+  display: flex;
+  flex: auto;
+  margin: 0;
+  line-height: 40px;
+}
 </style>

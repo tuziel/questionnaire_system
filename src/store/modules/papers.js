@@ -33,11 +33,19 @@ const getters = {
 }
 
 const actions = {
-
+  deletePaperByIdList (context, idList) {
+    idList.forEach((id) => {
+      context.commit('deletePaperById', id)
+    })
+  }
 }
 
 const mutations = {
-
+  deletePaperById (state, id) {
+    const papers = state.papers
+    const index = papers.findIndex(paper => paper.id === id)
+    papers.splice(index, 1)
+  }
 }
 
 export default {
