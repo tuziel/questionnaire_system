@@ -16,6 +16,7 @@ const questions = (function () {
 
     arr.push({
       id: i,
+      index: i,
       paperId: (i - 1) / 3 + 1 >> 0,
       type: type,
       title: [
@@ -36,7 +37,10 @@ const state = {
 
 const getters = {
   // 根据问卷id获取题目列表
-  getQuestionsByPaperId: (state) => (id) => state.questions.filter(quest => quest.paperId === id)
+  getQuestionsByPaperId: (state) => (id) =>
+    state.questions
+      .filter(quest => quest.paperId === id)
+      .sort((a, b) => a.index - b.index)
 }
 
 const actions = {
@@ -54,14 +58,16 @@ const mutations = {
   addQuestion (state, quest) {
     state.questions.push({
       id: state.nextId++,
+      index: quest.index,
       paperId: quest.paperId,
       type: quest.type,
       title: quest.title
     })
   },
-  // 更新问题题目
+  // 更新问题
   updateQuestion (state, quest) {
     const oldQuest = state.questions.find(oldQuest => oldQuest.id === quest.id)
+    oldQuest.index = quest.index
     oldQuest.title = quest.title
   }
 }

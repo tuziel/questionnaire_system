@@ -16,6 +16,7 @@ const options = (function () {
 
     arr.push({
       id: i,
+      index: i,
       questionId: tempId + tempMap[tempNum],
       text: type === TYPE_SINGLE_CHOICE
         ? '选项' + (tempNum + 1)
@@ -36,9 +37,9 @@ const state = {
 const getters = {
   // 根据问题id获取选项列表
   getOptionsByQuestionId: (state) =>
-    (id) => state.options.filter(
-      option => option.questionId === id
-    )
+    (id) => state.options
+      .filter(option => option.questionId === id)
+      .sort((a, b) => a.index - b.index)
 }
 
 const actions = {
@@ -59,14 +60,16 @@ const mutations = {
   addOption (state, option) {
     state.options.push({
       id: state.nextId++,
+      index: option.index,
       questionId: option.questionId,
       text: option.text,
       count: 0
     })
   },
-  // 更新选项内容
+  // 更新选项
   updateOption (state, option) {
     const oldOption = state.options.find(oldOption => oldOption.id === option.id)
+    oldOption.index = option.index
     oldOption.text = option.text
   },
   // 完成问卷时统计总量

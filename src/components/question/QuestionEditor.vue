@@ -36,28 +36,43 @@ export default {
       ...this.value
     }
   },
+  mounted () {
+    this.resetIndex()
+  },
   methods: {
+    // 设置顺序
+    resetIndex () {
+      const options = this.options
+      options && options.forEach((option, index) => {
+        option.index = index
+      })
+    },
+
     addoption () {
       this.options.push({
         text: ''
       })
+      this.resetIndex()
     },
 
     putUp (index) {
       const options = this.options
       const current = this.options.splice(index, 1)[0]
       options.splice(index - 1, 0, current)
+      this.resetIndex()
     },
 
     putDown (index) {
       const options = this.options
       const current = options.splice(index, 1)[0]
       options.splice(index + 1, 0, current)
+      this.resetIndex()
     },
 
     removeoption (index) {
       const options = this.options
       options.splice(index, 1)
+      this.resetIndex()
     }
   },
   computed: {
