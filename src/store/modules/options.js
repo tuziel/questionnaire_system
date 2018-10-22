@@ -16,7 +16,7 @@ const options = (function () {
 
     arr.push({
       id: i,
-      index: i,
+      index: [0, 1, 0, 1, 2, 3][tempNum],
       questionId: tempId + tempMap[tempNum],
       text: type === TYPE_SINGLE_CHOICE
         ? '选项' + (tempNum + 1)
