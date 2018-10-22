@@ -50,6 +50,16 @@ const actions = {
   },
   updateQuestion ({ commit }, quest) {
     commit('updateQuestion', quest)
+  },
+  // 根据id列表删除对应的问卷
+  deleteQuestionByIdList ({ commit }, idList) {
+    idList.forEach((id) => {
+      commit('deleteQuestionById', id)
+    })
+    return state.nextId - 1
+  },
+  deleteQuestionById ({ commit }, id) {
+    commit('deleteQuestionById', id)
   }
 }
 
@@ -69,6 +79,12 @@ const mutations = {
     const oldQuest = state.questions.find(oldQuest => oldQuest.id === quest.id)
     oldQuest.index = quest.index
     oldQuest.title = quest.title
+  },
+  // 删除id对应的问卷
+  deleteQuestionById (state, id) {
+    const questions = state.questions
+    const index = questions.findIndex(quest => quest.id === id)
+    questions.splice(index, 1)
   }
 }
 

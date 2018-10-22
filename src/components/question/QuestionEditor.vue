@@ -4,8 +4,16 @@
       <h4 class="header-title">{{getTypeText}}</h4>
       <div class="flex">
         <el-input v-model="value.title" placeholder="请输入问题"></el-input>
-        <div class="contorls" v-if="isSingleQuest || isMultipleQuest">
-          <el-button type="primary" icon="el-icon-plus" circle @click="addoption"></el-button>
+        <div class="contorls">
+          <el-dropdown @command="handleCommand" trigger="click">
+            <el-button type="primary" icon="el-icon-menu" circle></el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="addOption" v-if="isSingleQuest || isMultipleQuest">新增选项</el-dropdown-item>
+              <el-dropdown-item command="up">上移问题</el-dropdown-item>
+              <el-dropdown-item command="down">下移问题</el-dropdown-item>
+              <el-dropdown-item command="remove">删除问题</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </div>
     </div>
@@ -16,7 +24,7 @@
         <div class="contorls">
           <el-button type="primary" icon="el-icon-arrow-up" circle @click="putUp(index)" :disabled="index === 0"></el-button>
           <!-- <el-button type="primary" icon="el-icon-arrow-down" circle @click="putDown(index)" :disabled="index === options.length - 1"></el-button> -->
-          <el-button type="danger" icon="el-icon-minus" circle @click="removeoption(index)"></el-button>
+          <el-button type="danger" icon="el-icon-minus" circle @click="removeOption(index)"></el-button>
         </div>
       </div>
     </div>
@@ -36,16 +44,30 @@ export default {
       ...this.value
     }
   },
-  mounted () {
-    this.resetIndex()
-  },
   methods: {
-    // 设置顺序
+    // 重新设置顺序
     resetIndex () {
       const options = this.options
       options && options.forEach((option, index) => {
         option.index = index
       })
+    },
+
+    handleCommand (command) {
+      switch (command) {
+        case 'addOption': {
+          return this.addoption()
+        }
+        case 'up': {
+          return this.$emit('up', this.value)
+        }
+        case 'down': {
+          return this.$emit('down', this.value)
+        }
+        case 'remove': {
+          return this.$emit('remove', this.value)
+        }
+      }
     },
 
     addoption () {
@@ -57,7 +79,7 @@ export default {
 
     putUp (index) {
       const options = this.options
-      const current = this.options.splice(index, 1)[0]
+      const current = options.splice(index, 1)[0]
       options.splice(index - 1, 0, current)
       this.resetIndex()
     },
@@ -69,7 +91,7 @@ export default {
       this.resetIndex()
     },
 
-    removeoption (index) {
+    removeOption (index) {
       const options = this.options
       options.splice(index, 1)
       this.resetIndex()

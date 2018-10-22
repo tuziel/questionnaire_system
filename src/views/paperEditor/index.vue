@@ -15,7 +15,7 @@
 
     <div class="quest-list">
 
-      <QuestionEditor v-for="(quest, index) in questions" :key="quest.id" class="quest-box" v-model="questions[index]" />
+      <QuestionEditor v-for="(quest, index) in questions" :key="quest.id" class="quest-box" v-model="questions[index]" @up="putUpQuest(index)" @down="putDownQuest(index)" @remove="removeQuest(index)" />
 
       <div class="quest-box quest-box-new" v-if="isShowAddBox">
         <el-button @click="addSingleQuest">单选题</el-button>
@@ -47,6 +47,7 @@ export default {
       title: '',
       paperTitle: '',
       questions: [],
+      listRemoveId: [],
       isShowAddBox: false
     }
   },
@@ -79,18 +80,20 @@ export default {
 
         // 深拷贝所有数据
         this.paperTitle = paper.title
-        const questtions = this.getQuestionsByPaperId(id)
-        questtions.forEach(quest => {
+        const questions = this.getQuestionsByPaperId(id)
+        questions.forEach((quest, index) => {
           const data = {
             id: quest.id,
+            index: index,
             title: quest.title,
             type: quest.type
           }
 
           if (quest.type !== TYPE_TEXT) {
             const options = this.getOptionsByQuestionId(quest.id)
-            data.options = options.map(option => ({
+            data.options = options.map((option, index) => ({
               id: option.id,
+              index: index,
               questionId: option.questionId,
               text: option.text
             }))
@@ -100,6 +103,30 @@ export default {
         })
       })
     },
+
+    putUpQuest (index) {
+      const questions = this.questions
+      const quest = questions.splice(index, 1)[0]
+      questions.splice(index - 1, 0, quest)
+      this.resetIndex()
+    },
+    putDownQuest (index) {
+      const questions = this.questions
+      const quest = questions.splice(index, 1)[0]
+      questions.splice(index + 1, 0, quest)
+      this.resetIndex()
+    },
+    removeQuest (index) {
+      const quest = this.questions.splice(index, 1)
+      quest.id && this.listRemoveId.push(quest.id)
+      this.resetIndex()
+    },
+    resetIndex () {
+      this.questions.forEach((quest, index) => {
+        quest.index = index
+      })
+    },
+
     toCharts (id) {
       this.$router.push({
         name: 'charts',

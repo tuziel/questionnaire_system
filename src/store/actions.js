@@ -4,12 +4,16 @@ const TYPE_TEXT = 3
 
 export default {
   // 更新问卷
-  updatePaper ({ dispatch }, paper) {
+  updatePaper ({ dispatch, getters }, paper) {
     // 没有id转为新增
     if (!paper.id) {
       return dispatch('addPaper', paper)
     }
     dispatch('papers/updatePaper', paper)
+
+    // 查找当前已存在的问题id
+    const questions = getters['questions/getQuestionsByPaperId'](paper.id)
+    const idList = questions.map(quest => quest.id)
 
     // 更新问题
     paper.questions.forEach(quest => {
@@ -17,6 +21,9 @@ export default {
         quest.paperId = paper.id
         dispatch('questions/addQuestion', quest)
       } else {
+        // 有更新即未被删除
+        const index = idList.indexOf(quest.id)
+        idList.splice(index, 1)
         dispatch('questions/updateQuestion', quest)
 
         // 更新选项
@@ -32,6 +39,9 @@ export default {
         }
       }
     })
+
+    // 无更新即已被删除
+    dispatch('questions/deleteQuestionById', idList)
     return paper.id
   },
 
