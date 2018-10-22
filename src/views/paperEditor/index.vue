@@ -186,6 +186,7 @@ export default {
       }
 
       this.questions.push(data)
+      this.resetIndex()
     },
     addSingleQuest () {
       this.addQuest(TYPE_SINGLE_CHOICE)

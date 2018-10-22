@@ -19,11 +19,11 @@ export default {
     paper.questions.forEach(quest => {
       if (!quest.id) {
         quest.paperId = paper.id
-        dispatch('questions/addQuestion', quest)
+        dispatch('addQuestion', quest)
       } else {
         // 有更新即未被删除
         const index = idList.indexOf(quest.id)
-        idList.splice(index, 1)
+        index > -1 && idList.splice(index, 1)
         dispatch('questions/updateQuestion', quest)
 
         // 更新选项
@@ -41,7 +41,7 @@ export default {
     })
 
     // 无更新即已被删除
-    dispatch('questions/deleteQuestionById', idList)
+    dispatch('questions/deleteQuestionByIdList', idList)
     return paper.id
   },
 
