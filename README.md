@@ -1,6 +1,8 @@
-# 任务五十：微型调查问卷平台
+# 微型调查问卷平台
 
 > 来自百度前端学院大作业 [http://ife.baidu.com/2016/task/detail?taskId=50](http://ife.baidu.com/2016/task/detail?taskId=50)
+
+数据都存放在`store`里，没有后台，没有登录，没有`localstorage`储存，随便看看就好
 
 ## 安装依赖
 ```
