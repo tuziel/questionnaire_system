@@ -59,6 +59,7 @@ html {
 
 .header-form {
   display: flex;
+  flex-wrap: wrap;
   text-align: right;
   margin-bottom: 20px;
 }
