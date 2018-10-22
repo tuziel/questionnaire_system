@@ -2,6 +2,9 @@
 
 > 来自百度前端学院大作业 [http://ife.baidu.com/2016/task/detail?taskId=50](http://ife.baidu.com/2016/task/detail?taskId=50)
 
+框架用了`vue`+`vue-cli`+`vue-router`+`vuex`总是就是`vue`全家桶了  
+`UI`用了`element-ui`，图表用了`echarts`  
+还有一些小细节没完成  
 数据都存放在`store`里，没有后台，没有登录，没有`localstorage`储存，随便看看就好
 
 ## 安装依赖
