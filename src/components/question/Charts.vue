@@ -6,7 +6,7 @@
 
     <div class="flex">
       <div class="options">
-        <div class="option" v-for="option in options" :key="option.id">{{option.text}} , {{option.count}}</div>
+        <div class="option" v-for="option in options" :key="option.id">{{option.text}}</div>
       </div>
 
       <div ref="chart" class="chart"></div>
